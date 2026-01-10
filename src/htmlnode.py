@@ -1,10 +1,9 @@
-
 """
 TextNode --> HMTLNode
 is the representation in HTML
 of the abstraction made in the TextNode
 """
-
+# base class
 class HTMLNode:
     def __init__(self, tag=None, value=None, children=None, props=None):
         self.tag = tag
@@ -28,6 +27,8 @@ class HTMLNode:
         return f"HTMLNode({self.tag}, {self.value}, children: {self.children}, {self.props})"
 
 
+
+# inherits from HTMLNode, has no childrens, is used by ParentNode
 class LeafNode(HTMLNode):
     def __init__(self, tag, value, props=None):
         super().__init__(tag, value, None, props)
@@ -45,5 +46,23 @@ class LeafNode(HTMLNode):
 
 
 
+# inherits from HTMLNode, has childrens, they are LeafNodes, and
+# uses recursion for formatting them
+class ParentNode(HTMLNode):
+    def __init__(self, tag, children, props=None):
+        super().__init__(tag, None, children, props)
+
+    def to_html(self):
+        if not self.tag:
+            raise ValueError("ParentNode must have a value")
+        if not self.children:
+            raise ValueError("ParentNode must have children")
+
+        formated_childrens = "" 
+        for child in self.children:
+            formated_childrens += child.to_html()
+
+        return f"<{self.tag}>{formated_childrens}</{self.tag}>"
+    
 
 
