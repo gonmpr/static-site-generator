@@ -1,6 +1,16 @@
 import re
 from textnode import TextNode, TextType
 from htmlnode import LeafNode
+
+# raw Markdown -> TextNode's list
+def text_to_textnodes(text):
+    nodes = split_nodes_delimiter([TextNode(text, TextType.TEXT)], '**', TextType.BOLD)
+    nodes = split_nodes_delimiter(nodes, '_', TextType.ITALIC)
+    nodes = split_nodes_delimiter(nodes, '`', TextType.CODE)
+    nodes = split_nodes_link(nodes) 
+    nodes = split_nodes_image(nodes) 
+    return nodes
+
 # TextNode -> HTMLNode(LeafNode)
 def text_node_to_html_node(text_node):
     match text_node.text_type:
@@ -65,6 +75,79 @@ def extract_markdown_links(text):
     regex = r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)"
     matches = re.findall(regex, text)
     return matches
+
+
+#split raw markdown text into TextNodes based on images 
+def split_nodes_image(old_nodes):
+    new_nodes = []
+
+    for node in old_nodes:
+        if node.text_type != TextType.TEXT:
+            new_nodes.append(node)
+            continue
+
+        images = extract_markdown_images(node.text) 
+
+        if not images:
+            new_nodes.append(node)
+            continue
+
+        splited = node.text
+
+        for anchor, link in images:
+            splited = splited.split(f"![{anchor}]({link})", 1)
+
+            if len(splited) != 2:
+                raise Exception('Error spliting')
+
+            if splited[0]:
+                new_nodes.append(TextNode(splited[0], TextType.TEXT))
+            new_nodes.append(TextNode(anchor, TextType.IMAGE, link))
+
+            splited = splited[1]
+
+        if splited:
+            new_nodes.append(TextNode(splited, TextType.TEXT))
+
+    return new_nodes
+            
+
+            
+        
+
+
+#split raw markdown text into TextNodes based on links. 
+def split_nodes_link(old_nodes):
+    new_nodes = []
+
+    for node in old_nodes:
+        if node.text_type != TextType.TEXT:
+            new_nodes.append(node)
+            continue
+
+        links = extract_markdown_links(node.text) 
+
+        if not links:
+            new_nodes.append(node)
+            continue
+
+        splited = node.text
+
+        for alt, link in links:
+            splited = splited.split(f"[{alt}]({link})", 1)
+            if len(splited) != 2:
+                raise Exception('Error spliting')
+            if splited[0]:
+                new_nodes.append(TextNode(splited[0], TextType.TEXT))
+            new_nodes.append(TextNode(alt, TextType.LINK, link))
+
+            splited = splited[1]
+
+        if splited:
+            new_nodes.append(TextNode(splited, TextType.TEXT))
+
+    return new_nodes
+
 
 
 
