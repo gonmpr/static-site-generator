@@ -38,8 +38,8 @@ def generate_page(from_path, template_path, to_path, base_path):
         
         html = template_content.replace("{{ Title }}", title)
         html = html.replace("{{ Content }}", content)
-        html = template_content.replace('href="/', f'href="{base_path}')
-        html = template_content.replace('src="/', f'src="{base_path}')
+        html = html.replace('href="/', f'href="{base_path}')
+        html = html.replace('src="/', f'src="{base_path}')
         
         with open(to_path, 'w') as file:
             file.write(html)
