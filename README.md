@@ -7,7 +7,6 @@ static website.
 The focus of this project is simplicity: shell scripts, clear structure,
 and no external frameworks.
 
-------------------------------------------------------------------------
 
 ## Motivation
 
@@ -15,7 +14,6 @@ This project was created to better understand how static site generators
 work internally and practice file manipulation, using simple tools and shell 
 scripts instead of large frameworks.
 
-------------------------------------------------------------------------
 
 ## Features
 
