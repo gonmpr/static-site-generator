@@ -81,6 +81,8 @@ def text_to_children(text):
     for line in text:
         textnodes = text_to_textnodes(line)
         for node in textnodes:
+            if not node.text:
+                continue
             childrens.append(text_node_to_html_node(node))
     return childrens
 
