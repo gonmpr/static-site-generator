@@ -2,14 +2,6 @@ from htmlnode import LeafNode
 from enum import Enum
 import re
 
-"""
- Markdown --> TextNode 
-
-This are inline, no blocks.
-semantical abstraction for types 
-of text and formating
-like bold, italic, code, etc.
-"""
 
 class TextType(Enum):
     TEXT = "text"
