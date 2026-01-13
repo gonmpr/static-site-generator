@@ -2,7 +2,7 @@ import sys, os
 from gencontent import copy_files, generate_pages_recursive 
 
 def main():
-    if len(sys.argv) > 2:
+    if len(sys.argv) < 2:
         raise Exception('Usage: ./main.py [root_path]: default "/"')
 
     print('###################')
@@ -10,6 +10,7 @@ def main():
     print('###################')
     print()
 
+    
     base_path = sys.argv[1]
     current_dir = os.getcwd()
 
