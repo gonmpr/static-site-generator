@@ -9,16 +9,24 @@ def main():
     print('Moving files...')
     print('###################')
     print()
+
     base_path = sys.argv[1]
     current_dir = os.getcwd()
-    copy_files('static', 'public', current_dir)
+
+    template = 'template.html'
+    copy_from = 'static'
+    make_from = 'content'
+
+    build_to = 'docs'
+
+    copy_files(copy_from, build_to, current_dir)
 
     print('###################')
     print('Generating content...')
     print('###################')
     print()
 
-    generate_pages_recursive('content', 'template.html', 'public')
+    generate_pages_recursive(make_from, template, build_to, base_path)
 
 
 
