@@ -2,7 +2,7 @@ import os, shutil
 from block_transformations import markdown_to_html_node
 from pathlib import Path
 
-def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, base_path):
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, base_path='/'):
 
     for filename in os.listdir(dir_path_content):
         from_path = os.path.join(dir_path_content, filename)
@@ -16,7 +16,7 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, bas
 
 
 
-def generate_page(from_path, template_path, to_path, base_path):
+def generate_page(from_path, template_path, to_path, base_path='/'):
     from_path = os.path.join(os.getcwd(), from_path)
     template_path = os.path.join(os.getcwd(), template_path)
     to_path = os.path.join(os.getcwd(), to_path)
